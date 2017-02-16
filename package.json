@@ -1,0 +1,34 @@
+{
+  "name": "dnsimple",
+  "version": "1.0.0",
+  "description": "Dyn-DNSimple node app",
+  "main": "app.js",
+  "dependencies": {
+    "bl": "^0.9.5",
+    "events": "^1.1.1",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "moment": "^2.17.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://yonathan9669@github.com/yonathan9669/node-dns.git"
+  },
+  "keywords": [
+    "DDNS",
+    "DNSimple",
+    "Node"
+  ],
+  "author": "Yonathan Morales <y@plusteam.tech>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yonathan9669/node-dns/issues"
+  },
+  "homepage": "https://github.com/yonathan9669/node-dns#readme"
+}

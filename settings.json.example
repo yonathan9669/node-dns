@@ -1,8 +1,16 @@
 {
-    "currentIP": "0.0.0.0",
-    "username": "you@example.com",
-    "token": "your api token",
-    "domain": "example.com",
-    "recordID": "123456",
-    "checkInterval": "milliseconds to recheck"
+  "currentIP": "0.0.0.0",
+  "username": "you@example.com",
+  "token": "your api v1 token",
+  "domains": [
+    {
+      "name": "example.com",
+      "records": [
+        {
+          "name": "www"
+        }
+      ]
+    }
+  ],
+  "checkInterval": "milliseconds to recheck"
 }

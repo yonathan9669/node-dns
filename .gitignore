@@ -1,3 +1,4 @@
 settings.json
-sample_query.js
-.idea/
+node_modules
+
+.idea
