@@ -1,13 +1,11 @@
 var fs = require('fs'),
-	appPath = require('path').dirname(process.argv[1]),
-	Lookup = require(appPath + '/lib/lookup'),
-	DNSimple = require(appPath + '/lib/dnsimple'),
+	Lookup = require('./lib/lookup'),
+	DNSimple = require('./lib/dnsimple'),
 	moment = require('moment');
 
-var settings = JSON.parse(fs.readFileSync(appPath + '/settings.json'));
-var lookup = new Lookup(settings.currentIP);
+var settings = JSON.parse(fs.readFileSync('./settings.json'));
+var lookup = new Lookup();
 var dns = new DNSimple(settings);
-writeln('App Directory: ' + appPath);
 
 lookup.on('update', function(public_ip){
   // the update event is fired when there is a mismatch of
@@ -40,7 +38,7 @@ dns.on('record-list', function(domain, records){
   });
 
   if (!--updated) {
-	updateConfigFile(function(){
+	updateConfigFile(false, function(){
 	  checkIpStatus();
 	});
   }
@@ -50,20 +48,18 @@ dns.on('record-list', function(domain, records){
   writeln('On ' + domain.name + ' the ' + record.name + ' record IP was updated successfully.');
 
   if (!--updated) {
-	settings.currentIP = record.content;
-	writeln('All records were successfully updated...');
-	updateConfigFile();
+	updateConfigFile(true);
   }
 }).on('error', function(e){
   console.error(e);
 });
 
-function updateConfigFile(cb){
+function updateConfigFile(updated, cb){
   // we have to save the new public IP to a local file
   // so that we can do a comparison on the next run
-
+  writeln('All records were successfully ' + (updated ? 'updated' : 'retrieved') + '...');
   writeln('Updating local settings...');
-  fs.writeFile(appPath + '/settings.json', JSON.stringify(settings, undefined, 2), function(err){
+  fs.writeFile('./settings.json', JSON.stringify(settings, undefined, 2), function(err){
 	if (err) throw err;
 	writeln('Local settings updated successfully.');
 	cb && cb();
@@ -78,6 +74,7 @@ function checkIpStatus(){
 function updateRecords(newIp){
   writeln('Updating records...');
   updated = 0;
+  settings.currentIP = newIp;
   settings.domains.forEach(function(domain){
 	updated += domain.records.length;
 
@@ -92,7 +89,7 @@ function updateRecords(newIp){
   });
 
   if (!updated) {
-	writeln('All records were successfully updated...');
+	updateConfigFile(true);
   }
 }
 
